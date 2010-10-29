@@ -1,0 +1,58 @@
+Metadata-Version: 1.0
+Name: monq
+Version: 0.1
+Summary: A Python port of http://github.com/skiz/mongo_queue
+Home-page: http://github.com/splee/monq
+Author: Lee McFadden
+Author-email: spleeman@gmail.com
+License: UNKNOWN
+Description: This file requires editing
+        ==========================
+        
+        Note to the author: Please add something informative to this README *before*
+        releasing your software, as `a little documentation goes a long way`_.  Both
+        README.txt (this file) and NEWS.txt (release notes) will be included in your
+        package metadata which gets displayed in the PyPI page for your project.
+        
+        You can take a look at the README.txt of other projects, such as repoze.bfg
+        (http://bfg.repoze.org/trac/browser/trunk/README.txt) for some ideas.
+        
+        .. _`a little documentation goes a long way`: http://www.martinaspeli.net/articles/a-little-documentation-goes-a-long-way
+        
+        Credits
+        -------
+        
+        - `Distribute`_
+        - `Buildout`_
+        - `modern-package-template`_
+        
+        .. _Buildout: http://www.buildout.org/
+        .. _Distribute: http://pypi.python.org/pypi/distribute
+        .. _`modern-package-template`: http://pypi.python.org/pypi/modern-package-template
+        
+        
+        .. This is your project NEWS file which will contain the release notes.
+        .. See http://bitbucket.org/ianb/pip/src/tip/docs/news.txt for an example
+        .. NEWS.txt content.
+        .. This file will be appended to your project's long description.
+        
+        News
+        ====
+        
+        0.2a1
+        -----
+        
+        *Release date: UNRELEASED*
+        
+        * Example news entry for the in-development version
+        
+        
+        0.1
+        ---
+        
+        *Release date: 15-Mar-2010*
+        
+        * Example news entry for a released version
+        
+        
+Platform: UNKNOWN

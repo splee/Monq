@@ -1,0 +1,11 @@
+MANIFEST.in
+NEWS.txt
+README.txt
+setup.py
+src/monq/__init__.py
+src/monq.egg-info/PKG-INFO
+src/monq.egg-info/SOURCES.txt
+src/monq.egg-info/dependency_links.txt
+src/monq.egg-info/entry_points.txt
+src/monq.egg-info/not-zip-safe
+src/monq.egg-info/top_level.txt
