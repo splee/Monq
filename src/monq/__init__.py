@@ -5,11 +5,6 @@ import pymongo
 
 class MonQueue(object):
 
-    default_config = dict(database="mongo_queue",
-                          collection="mongo_queue",
-                          timeout=300,
-                          attempts=3)
-
     default_insert = dict(priority=0,
                           attempts=0,
                           locked_by=None,
@@ -18,12 +13,14 @@ class MonQueue(object):
 
     sort_hash = SON(priority=-1)
 
-    def __init__(self, connection, config=None):
+    def __init__(self, connection, database="mongo_queue",
+                 collection="mongo_queue", timeout=300, attempts=3):
         self.connection = connection
-        if config:
-            self.config = config
-        else:
-            self.config = self.default_config.copy()
+
+        self._database = database
+        self._collection = collection
+        self.timeout = timeout
+        self.attempts = attempts
 
         # make sure we have indexes
         self.collection.ensure_index([('locked_by', pymongo.ASCENDING),
@@ -33,11 +30,11 @@ class MonQueue(object):
 
     @property
     def db(self):
-        return self.connection[self.config['database']]
+        return self.connection[self._database]
 
     @property
     def collection(self):
-        return self.db[self.config['collection']]
+        return self.db[self._collection]
 
     def flush(self):
         self.collection.drop()
@@ -50,12 +47,12 @@ class MonQueue(object):
 
     def lock_next(self, locked_by):
         cmd = SON()
-        cmd['findandmodify'] = self.config['collection']
+        cmd['findandmodify'] = self._collection
         cmd['update'] = {'$set': {'locked_by': locked_by,
                                   'locked_at': datetime.utcnow()}
                         }
         cmd['query'] = {'locked_by': None,
-                        'attempts': {'$lt': self.config['attempts']}}
+                        'attempts': {'$lt': self.attempts}}
         cmd['sort'] = self.sort_hash
         cmd['limit'] = 1
         cmd['new'] = True
@@ -63,7 +60,7 @@ class MonQueue(object):
 
     def cleanup(self):
         q = dict(locked_by='/.*/',
-                 attempts={'$lt': self.config['attempts']})
+                 attempts={'$lt': self.attempts})
         res = self.collection.find(q)
 
         for job in res:
@@ -71,7 +68,7 @@ class MonQueue(object):
 
     def release(self, job, locked_by):
         cmd = SON()
-        cmd['findandmodify'] = self.config['collection']
+        cmd['findandmodify'] = self_collection
         cmd['update'] = {'$set': {'locked_by': None,
                                   'locked_at': None}}
         cmd['query'] = {'locked_by': locked_by,
@@ -82,7 +79,7 @@ class MonQueue(object):
 
     def complete(self, job, locked_by):
         cmd = SON()
-        cmd['findandmodify'] = self.config['collection']
+        cmd['findandmodify'] = self._collection
         cmd['query'] = {'locked_by': locked_by,
                         '_id': job['_id']}
         cmd['remove'] = True
